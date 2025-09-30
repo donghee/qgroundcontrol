@@ -185,6 +185,8 @@ find_package(Qt6
         TextToSpeech
         Widgets
         Xml
+        WebEngineCore
+        WebEngineQuick
     OPTIONAL_COMPONENTS
         Bluetooth
         MultimediaQuickPrivate

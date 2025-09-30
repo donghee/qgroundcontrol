@@ -89,7 +89,7 @@ ApplicationWindow {
         readonly property var       guidedControllerFlyView:        flyView.guidedController
 
         // Number of QGCTextField's with validation errors. Used to prevent closing panels with validation errors.
-        property int                validationErrorCount:           0 
+        property int                validationErrorCount:           0
 
         // Property to manage RemoteID quick access to settings page
         property bool               commingFromRIDIndicator:        false
@@ -164,6 +164,13 @@ ApplicationWindow {
         showTool(qsTr("Application Settings"), "AppSettings.qml", "/res/QGCLogoWhite")
         if (settingsPage !== "") {
             toolDrawerLoader.item.showSettingsPage(settingsPage)
+        }
+    }
+
+    function showWebView(url) {
+        showTool(qsTr("DSM"), "WebViewTool.qml", "/res/QGCLogoWhite")
+        if (toolDrawerLoader.item && url) {
+            toolDrawerLoader.item.url = url
         }
     }
 
@@ -274,7 +281,7 @@ ApplicationWindow {
         color:          QGroundControl.globalPalette.window
     }
 
-    FlyView { 
+    FlyView {
         id:                     flyView
         anchors.fill:           parent
         utmspSendActTrigger:    _utmspSendActTrigger
@@ -406,6 +413,21 @@ ApplicationWindow {
                         }
 
                         SubMenuButton {
+                            id:                 webViewButton
+                            height:             toolSelectDialog._toolButtonHeight
+                            Layout.fillWidth:   true
+                            text:               qsTr("DSM")
+                            imageResource:      "/res/cancel.svg"
+                            visible:            !QGroundControl.corePlugin.options.combineSettingsAndSetup
+                            onClicked: {
+                                if (mainWindow.allowViewSwitch()) {
+                                    drawer.close()
+                                    mainWindow.showWebView("http://localhost:8000")
+                                }
+                            }
+                        }
+
+                        SubMenuButton {
                             id:                 closeButton
                             height:             toolSelectDialog._toolButtonHeight
                             Layout.fillWidth:   true
@@ -492,7 +514,7 @@ ApplicationWindow {
         onClosed: {
             toolDrawer.toolSource = ""
         }
-        
+
         Rectangle {
             id:             toolDrawerToolbar
             anchors.left:   parent.left
@@ -727,7 +749,7 @@ ApplicationWindow {
                     anchors.centerIn:   parent
                     text:               ">"
                     color:              QGroundControl.globalPalette.buttonText
-                }  
+                }
 
                 QGCMouseArea {
                     fillItem: parent

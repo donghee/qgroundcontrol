@@ -64,7 +64,8 @@ DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install \
     libxi-dev \
     libxkbcommon-dev \
     libxkbcommon-x11-dev \
-    libxrender-dev
+    libxrender-dev \
+    libxkbfile-dev
 
 DEBIAN_FRONTEND=noninteractive apt-get -y --quiet install \
     libunwind-dev

@@ -9,6 +9,7 @@
 
 #include <QtQuick/QQuickWindow>
 #include <QtWidgets/QApplication>
+#include <QtWebEngineQuick/qtwebenginequickglobal.h>
 
 #ifdef Q_OS_MACOS
     #include <QtCore/QProcessEnvironment>
@@ -173,7 +174,7 @@ int main(int argc, char *argv[])
     };
     ParseCmdLineOptions(argc, argv, rgCmdLineOptions, std::size(rgCmdLineOptions), false);
 #endif // QT_DEBUG
-
+    QtWebEngineQuick::initialize();
     QGCApplication app(argc, argv, runUnitTests || simpleBootTest);
 
 #ifdef Q_OS_LINUX
