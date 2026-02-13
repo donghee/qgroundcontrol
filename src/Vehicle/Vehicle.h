@@ -46,6 +46,7 @@
 #include "RallyPointManager.h"
 #include "FTPManager.h"
 #include "ImageProtocolManager.h"
+#include "qTh.h"
 
 class Actuators;
 class EventHandler;
@@ -451,9 +452,20 @@ public:
     /// Trigger camera using MAV_CMD_DO_DIGICAM_CONTROL command
     Q_INVOKABLE void triggerSimpleCamera(void);
 
+    /// jaeeun 
+    Q_INVOKABLE void loggingStart();
+    Q_INVOKABLE void loggingStop();
+    Q_INVOKABLE void captureClicked();
+    int point = 0;
+
+    void _writeDroneBotLog();
+
+
 #if !defined(NO_ARDUPILOT_DIALECT)
     Q_INVOKABLE void flashBootloader();
 #endif
+
+    qTh*     qThread;
 
     bool    isInitialConnectComplete() const;
     bool    guidedModeSupported     () const;
@@ -848,6 +860,14 @@ public:
     CheckList   checkListState          () { return _checkListState; }
     void        setCheckListState       (CheckList cl)  { _checkListState = cl; emit checkListStateChanged(); }
 
+
+    //jaeeun
+    double gps_raw_lon;
+    double gps_raw_lat;
+    double gps_raw_alt;
+    uint64_t gps_time_usec;
+
+
     double loadProgress                 () const { return _loadProgress; }
 
     void setEventsMetadata(uint8_t compid, const QString& metadataJsonFileName, const QString& translationJsonFileName);
@@ -964,6 +984,10 @@ signals:
     void isROIEnabledChanged            ();
     void initialConnectComplete         ();
 
+ 
+    //jaeeun update gps data
+    void gpsRawDataReceived                (double lat, double lon, double alt);
+
     void sensorsParametersResetAck      (bool success);
 
 private slots:
@@ -1073,6 +1097,8 @@ private:
 
     QTimer              _csvLogTimer;
     QFile               _csvLogFile;
+
+    QTimer              _botLogTimer;
 
     bool            _joystickEnabled = false;
 

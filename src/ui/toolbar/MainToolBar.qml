@@ -32,6 +32,8 @@ Rectangle {
     property var    _activeVehicle:     QGroundControl.multiVehicleManager.activeVehicle
     property bool   _communicationLost: _activeVehicle ? _activeVehicle.vehicleLinkManager.communicationLost : false
     property color  _mainStatusBGColor: qgcPal.brandingPurple
+    property bool   _logFlag: false
+
 
     QGCPalette { id: qgcPal }
 
@@ -70,6 +72,32 @@ Rectangle {
             icon.source:            "/res/QGCLogoFull"
             logo:                   true
             onClicked:              mainWindow.showToolSelectDialog()
+        }
+
+        DroneBotButton {
+            id:                     logButton
+            text:                   qsTr("Log")
+            onClicked:  {
+                if(!_logFlag){
+                    logButton.text = qsTr("Logging")
+                    _activeVehicle.loggingStart()
+                    _logFlag = true
+                }else {
+                    
+                    logButton.text = qsTr("Log")
+                    _activeVehicle.loggingStop()
+                    _logFlag = false
+
+                }
+            }
+            visible:                true
+        }
+
+        QGCButton {
+            id:                     captureButton
+            text:                   qsTr("Capture")
+            onClicked:              _activeVehicle.captureClicked()
+            visible:                true
         }
 
         MainStatusIndicator {

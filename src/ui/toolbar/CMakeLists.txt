@@ -10,6 +10,7 @@ add_custom_target(UiToolbarQml
 		MainStatusIndicator.qml
 		MainToolBarIndicators.qml
 		MainToolBar.qml
+		DroneBotButton.qml
 		MessageIndicator.qml
 		ModeIndicator.qml
 		MultiVehicleSelector.qml
